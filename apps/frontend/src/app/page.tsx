@@ -41,8 +41,8 @@ export default function Home() {
               src="/vercel.svg"
               alt="Vercel logomark"
               width={20}
-              style={{ width: 'auto', height: 'auto' }}
               height={20}
+              className="h-auto"
             />
             Deploy now
           </a>
@@ -69,10 +69,7 @@ export default function Home() {
             alt="File icon"
             width={16}
             height={16}
-            style={{
-              maxWidth: '100%',
-              height: 'auto'
-            }}
+            className="h-auto"
           />
           Learn
         </a>
@@ -88,10 +85,7 @@ export default function Home() {
             alt="Window icon"
             width={16}
             height={16}
-            style={{
-              maxWidth: '100%',
-              height: 'auto'
-            }}
+            className="h-auto"
           />
           Examples
         </a>
@@ -107,10 +101,7 @@ export default function Home() {
             alt="Globe icon"
             width={16}
             height={16}
-            style={{
-              maxWidth: '100%',
-              height: 'auto'
-            }}
+            className="h-auto"
           />
           Go to nextjs.org →
         </a>
