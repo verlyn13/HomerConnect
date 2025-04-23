@@ -3,7 +3,7 @@ modules = ["nodejs-20"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Frontend Dev"
+runButton = "Init Stage"
 
 [[workflows.workflow]]
 name = "Frontend Dev"
@@ -13,6 +13,92 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd apps/frontend && npm run dev"
+
+[[workflows.workflow]]
+name = "Init Stage"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "# Setup basics"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mkdir -p apps/frontend/src apps/backend/src"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm install "
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../backend && npx @nestjs/cli new . --package-manager npm --language typescript --directory ."
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../.."
+
+[[workflows.workflow]]
+name = "Backend Dev"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run start:dev"
+
+[[workflows.workflow]]
+name = "Full Stack Dev"
+author = 22265372
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run dev"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run start:dev"
+
+[[workflows.workflow]]
+name = "Lint & Format"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run lint && npm run format"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../backend && npm run lint && npm run format"
+
+[[workflows.workflow]]
+name = "Test"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run test"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../backend && npm run test"
+
+[[workflows.workflow]]
+name = "Build"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run build"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../backend && npm run build"
 
 [[ports]]
 localPort = 3000
