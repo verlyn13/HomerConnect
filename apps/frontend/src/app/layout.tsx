@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { GeistSans, GeistMono } from '@vercel/fonts';
+import { Inter as GeistSans } from 'next/font/google';
+import { Roboto_Mono as GeistMono } from 'next/font/google';
 import "./globals.css";
 
-const geistSans = GeistSans;
-const geistMono = GeistMono;
+const geistSans = GeistSans({ subsets: ['latin'] });
+const geistMono = GeistMono({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
