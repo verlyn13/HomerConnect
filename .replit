@@ -29,11 +29,11 @@ args = "mkdir -p apps/frontend/src apps/backend/src"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/frontend && npm install "
+args = "cd apps/frontend && npm install"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../backend && npx @nestjs/cli new . --package-manager npm --language typescript --directory ."
+args = "cd ../backend && npm install"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -99,6 +99,19 @@ args = "cd apps/frontend && npm run build"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd ../backend && npm run build"
+
+[[workflows.workflow]]
+name = "Setup NestJS"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npx @nestjs/cli new . --package-manager npm --language typescript --directory . --skip-git --skip-install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../.."
 
 [[ports]]
 localPort = 3000
