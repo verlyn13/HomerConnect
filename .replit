@@ -21,6 +21,18 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
+args = "#!/bin/bash"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "set -e  # Exit on any error"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
 args = "# Create logs directory for better organization"
 
 [[workflows.workflow.tasks]]
@@ -37,43 +49,47 @@ args = "# Frontend initialization with proper error handling"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"🔄 Initializing Frontend...\" &&"
+args = "echo \"🔄 Initializing Frontend...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/frontend && {"
+args = "cd apps/frontend || { echo \"❌ Failed to enter frontend directory\"; exit 1; }"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  echo \"📦 Installing frontend dependencies...\" &&"
+args = ""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  npm install 2>&1 | tee ../../logs/frontend-install.log || { echo \"❌ Frontend installation failed. Check logs/frontend-install.log\"; exit 1; }"
+args = "echo \"📦 Installing frontend dependencies...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  "
+args = "npm install 2>&1 | tee ../../logs/frontend-install.log || { echo \"❌ Frontend installation failed. Check logs/frontend-install.log\"; exit 1; }"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  echo \"🔍 Running frontend lint check...\" &&"
+args = ""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  npm run lint 2>&1 | tee ../../logs/frontend-lint.log || { echo \"⚠️ Frontend lint check failed. Check logs/frontend-lint.log\"; }"
+args = "echo \"🔍 Running frontend lint check...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  "
+args = "npm run lint 2>&1 | tee ../../logs/frontend-lint.log || echo \"⚠️ Frontend lint check failed. Check logs/frontend-lint.log\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  echo \"✅ Frontend initialization complete\""
+args = ""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "} || { echo \"❌ Frontend initialization failed\"; exit 1; }"
+args = "echo \"✅ Frontend initialization complete\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../.. || { echo \"❌ Failed to return to root\"; exit 1; }"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -85,43 +101,47 @@ args = "# Backend initialization with proper error handling"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"🔄 Initializing Backend...\" &&"
+args = "echo \"🔄 Initializing Backend...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../../apps/backend && {"
+args = "cd apps/backend || { echo \"❌ Failed to enter backend directory\"; exit 1; }"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  echo \"📦 Installing backend dependencies...\" &&"
+args = ""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  npm install 2>&1 | tee ../../logs/backend-install.log || { echo \"❌ Backend installation failed. Check logs/backend-install.log\"; exit 1; }"
+args = "echo \"📦 Installing backend dependencies...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  "
+args = "npm install 2>&1 | tee ../../logs/backend-install.log || { echo \"❌ Backend installation failed. Check logs/backend-install.log\"; exit 1; }"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  echo \"🔍 Running backend lint check...\" &&"
+args = ""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  npm run lint 2>&1 | tee ../../logs/backend-lint.log || { echo \"⚠️ Backend lint check failed. Check logs/backend-lint.log\"; }"
+args = "echo \"🔍 Running backend lint check...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  "
+args = "npm run lint 2>&1 | tee ../../logs/backend-lint.log || echo \"⚠️ Backend lint check failed. Check logs/backend-lint.log\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  echo \"✅ Backend initialization complete\""
+args = ""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "} || { echo \"❌ Backend initialization failed\"; exit 1; }"
+args = "echo \"✅ Backend initialization complete\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../.. || { echo \"❌ Failed to return to root\"; exit 1; }"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -133,15 +153,11 @@ args = "# Final status check"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"🔍 Running final health checks...\" &&"
+args = "echo \"🔍 Running final health checks...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../.. && {"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "  if [ -d \"apps/frontend/node_modules\" ] && [ -d \"apps/backend/node_modules\" ]; then"
+args = "if [ -d \"apps/frontend/node_modules\" ] && [ -d \"apps/backend/node_modules\" ]; then"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -149,7 +165,7 @@ args = "    echo \"✅ Project initialized successfully!\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  else"
+args = "else"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -161,11 +177,7 @@ args = "    exit 1"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "  fi"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "}"
+args = "fi"
 
 [[workflows.workflow]]
 name = "Backend Dev"
