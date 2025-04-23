@@ -88,6 +88,10 @@ export default function Home() {
             alt="Window icon"
             width={16}
             height={16}
+            style={{
+              maxWidth: '100%',
+              height: 'auto'
+            }}
           />
           Examples
         </a>
@@ -103,6 +107,10 @@ export default function Home() {
             alt="Globe icon"
             width={16}
             height={16}
+            style={{
+              maxWidth: '100%',
+              height: 'auto'
+            }}
           />
           Go to nextjs.org →
         </a>
