@@ -11,10 +11,7 @@ export default function Home() {
           width={180}
           height={38}
           priority
-          style={{
-            maxWidth: '100%',
-            height: 'auto'
-          }}
+          className="h-auto"
         />
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-mono">
           <li className="mb-2 tracking-[-.01em]">
@@ -37,12 +34,11 @@ export default function Home() {
             rel="noopener noreferrer"
           >
             <Image
-              className="dark:invert"
+              className="dark:invert h-auto"
               src="/vercel.svg"
               alt="Vercel logomark"
               width={20}
               height={20}
-              className="h-auto"
             />
             Deploy now
           </a>
