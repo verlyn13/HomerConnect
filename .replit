@@ -3,7 +3,7 @@ modules = ["nodejs-20"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Init Stage"
+runButton = "Security Audit"
 
 [[workflows.workflow]]
 name = "Frontend Dev"
