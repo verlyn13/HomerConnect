@@ -180,3 +180,33 @@ args = "cd apps/frontend && npm run lint && npm run test"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd apps/backend && npm run lint && npm run test"
+
+[[workflows.workflow]]
+name = "[1. Init] Project Setup"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install -g @nestjs/cli typescript"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm install"
+
+[[workflows.workflow]]
+name = "[Tools] Format All Code"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run format:write"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run format:write"
