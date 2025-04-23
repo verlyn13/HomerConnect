@@ -21,7 +21,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "bash scripts/init.sh"
+args = "chmod +x scripts/init.sh && ./scripts/init.sh"
 
 [[workflows.workflow]]
 name = "Backend Dev"
