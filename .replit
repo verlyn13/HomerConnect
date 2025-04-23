@@ -115,6 +115,15 @@ args = "cd $REPL_HOME/apps/frontend && npm audit fix && npm audit"
 task = "shell.exec"
 args = "cd $REPL_HOME/apps/backend && npm audit fix && npm audit"
 
+[[workflows.workflow]]
+name = "Supabase Link"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd supabase && SUPABASE_NO_KEYRING=true supabase link --project-ref caongjwufneioqjpjkvb -p $POSTGRES_PASSWORD"
+
 [[ports]]
 localPort = 3000
 externalPort = 80
