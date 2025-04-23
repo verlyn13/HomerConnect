@@ -1,2 +1,19 @@
+modules = ["nodejs-20"]
 [nix]
 channel = "stable-24_05"
+
+[workflows]
+runButton = "Frontend Dev"
+
+[[workflows.workflow]]
+name = "Frontend Dev"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run dev"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
