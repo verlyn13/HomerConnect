@@ -58,9 +58,19 @@ fi
 
 cd ../.. || exit 1
 
+# Create secrets template if it doesn't exist
+echo "🔑 Setting up secrets management..."
+if [ ! -f "~/.secrets/HomerConnect/secrets.json" ]; then
+    bash scripts/load_secrets.sh
+fi
+
 # Final health check
 if [ -d "apps/frontend/node_modules" ] && [ -d "apps/backend/node_modules" ]; then
     echo "✅ Project initialized successfully!"
+    echo "💡 Use the following commands to start development:"
+    echo "   - npm run dev          - Start both frontend and backend"
+    echo "   - npm run supabase:start - Start Supabase local development"
+    echo "   - npm run load-secrets - Manually refresh environment variables"
 else
     echo "❌ Project initialization incomplete"
     exit 1

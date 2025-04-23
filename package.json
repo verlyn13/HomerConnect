@@ -4,7 +4,14 @@
   "description": "A community calendar platform for Homer, Alaska that enables grassroots organizing and community engagement.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "load-secrets": "bash scripts/load_secrets.sh",
+    "predev": "npm run load-secrets",
+    "dev": "npm run --prefix apps/frontend dev & npm run --prefix apps/backend start:dev",
+    "supabase:start": "npm run load-secrets && supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:link": "npm run load-secrets && cd supabase && source ../.env && supabase link --project-ref caongjwufneioqjpjkvb -p \"$POSTGRES_PASSWORD\"",
+    "supabase:push": "npm run load-secrets && SUPABASE_NO_KEYRING=true supabase db push"
   },
   "keywords": [],
   "author": "",

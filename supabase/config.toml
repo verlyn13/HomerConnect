@@ -22,12 +22,11 @@ max_rows = 1000
 enabled = false
 
 [db]
-# Remote database configuration
-host = "db.caongjwufneioqjpjkvb.supabase.co"
-port = 5432
-user = "postgres"
-password = "env(POSTGRES_PASSWORD)"
-database = "postgres"
+# Port to use for the local database URL.
+port = 54322
+# The database major version to use. This has to be the same as your remote database's. Run `SHOW
+# server_version;` on the remote database to check.
+major_version = 15
 
 [db.pooler]
 enabled = false
