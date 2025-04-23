@@ -1,0 +1,53 @@
+🚀 Starting initialization process...
+🔄 Initializing Frontend...
+📦 Installing frontend dependencies...
+
+up to date, audited 376 packages in 1s
+
+143 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+🔍 Running frontend lint check...
+
+> frontend@0.1.0 lint
+> next lint
+
+/home/runner/workspace/apps/frontend/node_modules/next/dist/server/config.js:800
+            throw new Error(`Configuring Next.js via '${(0, _path.basename)(nonJsPath)}' is not supported. Please replace the file with 'next.config.js' or 'next.config.mjs'.`);
+                  ^
+
+Error: Configuring Next.js via 'next.config.ts' is not supported. Please replace the file with 'next.config.js' or 'next.config.mjs'.
+    at loadConfig (/home/runner/workspace/apps/frontend/node_modules/next/dist/server/config.js:800:19)
+    at async Module.nextLint (/home/runner/workspace/apps/frontend/node_modules/next/dist/cli/next-lint.js:54:24)
+
+Node.js v20.18.1
+🔄 Initializing Backend...
+📦 Installing backend dependencies...
+
+up to date, audited 694 packages in 1s
+
+117 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+🔍 Running backend lint check...
+
+> backend@0.0.1 lint
+> eslint "{src,apps,libs,test}/**/*.ts" --fix
+
+
+Oops! Something went wrong! :(
+
+ESLint: 8.57.1
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'eslint-plugin-prettier' imported from /home/runner/workspace/apps/backend/eslint.config.mjs
+    at packageResolve (node:internal/modules/esm/resolve:854:9)
+    at moduleResolve (node:internal/modules/esm/resolve:927:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1169:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:542:12)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:510:25)
+    at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:239:38)
+    at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:96:40)
+    at link (node:internal/modules/esm/module_job:95:36)
+✅ Project initialized successfully!
