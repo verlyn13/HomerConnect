@@ -16,7 +16,8 @@ export default [
     languageOptions: {
       parser: tsParser,
       globals: {
-        ...globals.node
+        ...globals.node,
+        ...globals.jest
       },
       parserOptions: {
         project: './tsconfig.json'
@@ -25,7 +26,12 @@ export default [
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { 
+        'argsIgnorePattern': '^_',
+        'varsIgnorePattern': '^_'
+      }]
     }
   }
 ];
