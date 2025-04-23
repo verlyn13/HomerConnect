@@ -49,7 +49,7 @@ args = "# Backend setup"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../backend && npx @nestjs/cli new . --package-manager npm --language typescript --directory . --skip-git --skip-install"
+args = "cd ../../apps/backend && npx @nestjs/cli new . --package-manager npm --language typescript --directory . --skip-git --skip-install"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
