@@ -1,4 +1,5 @@
 run = "       echo \"Run button configured via Workflows tool. Select desired Workflow.\"      "
+modules = ["nodejs-20"]
 [nix]
 channel = "stable-24_05"
 
