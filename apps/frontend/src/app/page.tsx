@@ -10,8 +10,11 @@ export default function Home() {
           alt="Next.js logo"
           width={180}
           height={38}
-          style={{ width: 'auto', height: 'auto' }}
           priority
+          style={{
+            maxWidth: '100%',
+            height: 'auto'
+          }}
         />
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-mono">
           <li className="mb-2 tracking-[-.01em]">
@@ -66,6 +69,10 @@ export default function Home() {
             alt="File icon"
             width={16}
             height={16}
+            style={{
+              maxWidth: '100%',
+              height: 'auto'
+            }}
           />
           Learn
         </a>
