@@ -21,11 +21,35 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
+args = "#!/bin/bash"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "set -e  # Exit on any error"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting initialization process...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
 args = "# Setup directories"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "mkdir -p apps/frontend/src apps/backend/src"
+args = "echo \"📁 Creating directory structure...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mkdir -p apps/frontend/src apps/backend/src || { echo \"❌ ERROR: Failed to create directory structure\"; exit 1; }"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -37,15 +61,95 @@ args = "# Frontend setup"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/frontend"
+args = "echo \"⚛️ Setting up frontend...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm install"
+args = "if ! cd apps/frontend; then"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../.."
+args = "    echo \"❌ ERROR: Failed to enter frontend directory - directory may not exist\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    exit 1"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "fi"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "if [ ! -f \"package.json\" ]; then"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"❌ ERROR: package.json not found in frontend directory ($(pwd))\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"💡 TIP: Ensure package.json exists in apps/frontend/\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    exit 1"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "fi"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📦 Installing frontend dependencies...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "if ! npm install; then"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"❌ ERROR: Frontend npm install failed\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"💡 TIP: Check package.json for invalid dependencies\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    exit 1"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "fi"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "if ! cd ../..; then"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"❌ ERROR: Failed to return to root directory\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    exit 1"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "fi"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -57,19 +161,103 @@ args = "# Backend setup"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/backend"
+args = "echo \"🔧 Setting up backend...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npx @nestjs/cli new . --package-manager npm --language typescript --directory . --skip-git --skip-install"
+args = "if ! cd apps/backend; then"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm install"
+args = "    echo \"❌ ERROR: Failed to enter backend directory - directory may not exist\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../.."
+args = "    exit 1"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "fi"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "if [ ! -f \"package.json\" ]; then"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"❌ ERROR: package.json not found in backend directory ($(pwd))\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"💡 TIP: Ensure package.json exists in apps/backend/\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    exit 1"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "fi"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📦 Installing backend dependencies...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "if ! npm install; then"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"❌ ERROR: Backend npm install failed\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"💡 TIP: Check package.json for invalid dependencies\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    exit 1"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "fi"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "if ! cd ../..; then"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    echo \"❌ ERROR: Failed to return to root directory\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    exit 1"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "fi"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"✅ Init Stage completed successfully!\""
 
 [[workflows.workflow]]
 name = "Backend Dev"
