@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter as GeistSans } from 'next/font/google';
-import { Roboto_Mono as GeistMono } from 'next/font/google';
+import { Inter } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = GeistSans({ subsets: ['latin'] });
-const geistMono = GeistMono({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] });
+const robotoMono = Roboto_Mono({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
