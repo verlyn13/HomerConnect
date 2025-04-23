@@ -56,7 +56,7 @@ args = "cd apps/frontend && npm run lint && npm run format"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../backend && npm run lint && npm run format"
+args = "cd ../../apps/backend && npm run lint && npm run format"
 
 [[workflows.workflow]]
 name = "Test"
@@ -69,7 +69,7 @@ args = "cd apps/frontend && npm run test"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../backend && npm run test"
+args = "cd ../../apps/backend && npm run test"
 
 [[workflows.workflow]]
 name = "Build"
@@ -78,19 +78,11 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "# Frontend build with security check"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
 args = "cd apps/frontend && npm audit && npm run build"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "# Backend build with security check "
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd ../backend && npm audit && npm run build"
+args = "cd ../../apps/backend && npm audit && npm run build"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -120,7 +112,7 @@ args = "cd apps/frontend && npm audit fix && npm audit"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../backend && npm audit fix && npm audit"
+args = "cd ../../apps/backend && npm audit fix && npm audit"
 
 [[ports]]
 localPort = 3000
