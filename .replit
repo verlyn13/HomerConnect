@@ -6,7 +6,7 @@ channel = "stable-24_05"
 run = ["sh", "-c", "       echo \"Run button configured via Workflows tool. Select desired Workflow.\"      "]
 
 [workflows]
-runButton = "[3. Dev] Run Full Stack"
+runButton = "[1. Init] Setup Project"
 
 [[workflows.workflow]]
 name = "[Setup] Install All Dependencies"
@@ -199,14 +199,19 @@ task = "shell.exec"
 args = "cd apps/backend && npm install"
 
 [[workflows.workflow]]
-name = "[Tools] Format All Code"
+name = "[Tools] Run Backend Only"
 author = 22265372
 mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/frontend && npm run format:write"
+args = "cd apps/backend && npm run start:dev"
+
+[[workflows.workflow]]
+name = "[Tools] Run Frontend Only"
+author = 22265372
+mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/backend && npm run format:write"
+args = "cd apps/frontend && npm run dev"

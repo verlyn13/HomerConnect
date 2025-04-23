@@ -1,0 +1,155 @@
+Okay, let's design a set of Replit Workflows tailored to our Community Calendar project's orchestration plan. These workflows will leverage the structure (`apps/frontend`, `apps/backend`), chosen tools (npm, NestJS, Next.js, Supabase CLI), and common development tasks.
+
+**Prerequisites:**
+
+1.  **Replit Secrets:** Ensure the following are configured in Replit Secrets:
+    *   `SUPABASE_URL`
+    *   `SUPABASE_ANON_KEY` (for frontend)
+    *   `SUPABASE_SERVICE_ROLE_KEY` (for backend)
+    *   `OPENAI_API_KEY` (for backend AI features)
+    *   `SUPABASE_ACCESS_TOKEN` (if using Supabase CLI commands that require login, like `db push` or potentially linking)
+    *   `DATABASE_URL` (Supabase Postgres connection string, potentially needed by backend/migrations: `postgresql://postgres:[YOUR-PASSWORD]@[YOUR-HOST]:5432/postgres`) - Get this from Supabase Dashboard -> Project Settings -> Database -> Connection string -> URI. **Store the password part securely!**
+2.  **Supabase CLI:** Needs to be available. Add `pkgs.supabase-cli` to your `replit.nix` file under `deps`.
+3.  **Node.js Version:** Ensure the Replit environment uses the Node.js version specified in the plan (e.g., via `.replit` or `replit.nix`).
+4.  **Docker (Optional but preferred for Backend):** If using the Docker-based backend workflow, ensure the Replit environment supports Docker (may require specific templates or paid plans). If not, rely on the Node-based backend workflow.
+
+---
+
+### Proposed Replit Workflows:
+
+**1. Workflow: `[Setup] Install All Dependencies`**
+
+*   **Description:** Installs npm packages for frontend, backend, and potentially the root (if monorepo tools like husky are used at the root). Essential after cloning or pulling major changes.
+*   **Execution Mode:** Sequential
+*   **Tasks:**
+    1.  **(Optional) Execute Shell Command:** `echo "Installing root dependencies..." && npm install` (Only if root `package.json` exists with deps)
+    2.  **Execute Shell Command:** `echo "Installing frontend dependencies..." && cd apps/frontend && npm install`
+    3.  **Execute Shell Command:** `echo "Installing backend dependencies..." && cd apps/backend && npm install`
+
+**2. Workflow: `[Dev] Run Backend (Node)`**
+
+*   **Description:** Starts the backend NestJS development server directly using Node.js. Useful if Docker isn't available/preferred in Replit. Requires backend dependencies installed and Replit secrets set.
+*   **Execution Mode:** Sequential (Single Task)
+*   **Tasks:**
+    1.  **Execute Shell Command:** `cd apps/backend && npm run start:dev`
+
+**3. Workflow: `[Dev] Run Frontend`**
+
+*   **Description:** Starts the Next.js frontend development server. Requires frontend dependencies installed and Replit secrets set.
+*   **Execution Mode:** Sequential (Single Task)
+*   **Tasks:**
+    1.  **Execute Shell Command:** `cd apps/frontend && npm run dev`
+
+**4. Workflow: `[Dev] Run Full Stack (Node Backend)`**
+
+*   **Description:** Runs both the frontend and backend (Node version) development servers concurrently. This is likely the **primary workflow for the main "Run" button.**
+*   **Execution Mode:** Parallel
+*   **Tasks:**
+    1.  **Run Workflow:** `[Dev] Run Frontend`
+    2.  **Run Workflow:** `[Dev] Run Backend (Node)`
+
+**5. Workflow: `[Dev] Run Backend (Docker)` (Optional - if Docker works reliably)**
+
+*   **Description:** Starts the backend NestJS development server using Docker Compose. Preferred for consistency if Docker is available.
+*   **Execution Mode:** Sequential (Single Task)
+*   **Tasks:**
+    1.  **Execute Shell Command:** `docker-compose up --build backend` (Ensure `docker-compose.yml` is configured correctly at the root)
+
+**6. Workflow: `[Dev] Run Full Stack (Docker Backend)` (Optional - if Docker works reliably)**
+
+*   **Description:** Runs the frontend dev server and the Dockerized backend concurrently. Alternative primary workflow if Docker is used.
+*   **Execution Mode:** Parallel
+*   **Tasks:**
+    1.  **Run Workflow:** `[Dev] Run Frontend`
+    2.  **Run Workflow:** `[Dev] Run Backend (Docker)`
+
+**7. Workflow: `[Quality] Lint Frontend`**
+
+*   **Description:** Runs the ESLint check for the frontend codebase.
+*   **Execution Mode:** Sequential (Single Task)
+*   **Tasks:**
+    1.  **Execute Shell Command:** `cd apps/frontend && npm run lint`
+
+**8. Workflow: `[Quality] Lint Backend`**
+
+*   **Description:** Runs the ESLint check for the backend codebase.
+*   **Execution Mode:** Sequential (Single Task)
+*   **Tasks:**
+    1.  **Execute Shell Command:** `cd apps/backend && npm run lint`
+
+**9. Workflow: `[Quality] Lint All`**
+
+*   **Description:** Runs linters for both frontend and backend in parallel.
+*   **Execution Mode:** Parallel
+*   **Tasks:**
+    1.  **Run Workflow:** `[Quality] Lint Frontend`
+    2.  **Run Workflow:** `[Quality] Lint Backend`
+
+**10. Workflow: `[Quality] Format Check All`**
+
+*   **Description:** Runs Prettier format checks for both frontend and backend in parallel.
+*   **Execution Mode:** Parallel
+*   **Tasks:**
+    1.  **Execute Shell Command:** `cd apps/frontend && npm run format:check`
+    2.  **Execute Shell Command:** `cd apps/backend && npm run format:check`
+
+**11. Workflow: `[Quality] Format Write All`**
+
+*   **Description:** Runs Prettier to automatically format code for both frontend and backend sequentially (to avoid potential parallel write conflicts, though unlikely).
+*   **Execution Mode:** Sequential
+*   **Tasks:**
+    1.  **Execute Shell Command:** `echo "Formatting frontend..." && cd apps/frontend && npm run format:write`
+    2.  **Execute Shell Command:** `echo "Formatting backend..." && cd apps/backend && npm run format:write`
+
+**12. Workflow: `[Test] Run Backend Tests`**
+
+*   **Description:** Executes the backend test suite (unit/integration depending on `npm run test` script).
+*   **Execution Mode:** Sequential (Single Task)
+*   **Tasks:**
+    1.  **Execute Shell Command:** `cd apps/backend && npm run test`
+
+**13. Workflow: `[Test] Run Frontend Tests` (Add when FE tests are implemented)**
+
+*   **Description:** Executes the frontend test suite.
+*   **Execution Mode:** Sequential (Single Task)
+*   **Tasks:**
+    1.  **Execute Shell Command:** `cd apps/frontend && npm run test` (Adjust script name if needed)
+
+**14. Workflow: `[Quality] Pre-Commit Check Simulation`**
+
+*   **Description:** Simulates a pre-commit hook by running linters and tests sequentially. Helps catch issues before committing code.
+*   **Execution Mode:** Sequential
+*   **Tasks:**
+    1.  **Run Workflow:** `[Quality] Lint All`
+    2.  **Run Workflow:** `[Test] Run Backend Tests`
+    3.  **(Optional) Run Workflow:** `[Test] Run Frontend Tests` (Add once available)
+
+**15. Workflow: `[DB] Apply Migrations`**
+
+*   **Description:** Applies pending Supabase database migrations using the Supabase CLI. Requires `supabase` CLI installed and project linked/environment configured.
+*   **Execution Mode:** Sequential (Single Task)
+*   **Tasks:**
+    1.  **Execute Shell Command:** `echo "Applying Supabase migrations..." && supabase migration up`
+    *   *Note:* This assumes you are working against the linked remote Supabase DB directly from Replit, or using Supabase local dev (`supabase start`) which might be more complex to set up in Replit. Requires `DATABASE_URL` or equivalent connection info available to the CLI.
+
+**16. Workflow: `[Build] Build All`**
+
+*   **Description:** Creates production builds for both frontend and backend sequentially.
+*   **Execution Mode:** Sequential
+*   **Tasks:**
+    1.  **Execute Shell Command:** `echo "Building frontend..." && cd apps/frontend && npm run build`
+    2.  **Execute Shell Command:** `echo "Building backend..." && cd apps/backend && npm run build`
+
+---
+
+### Assigning the Default "Run" Button:
+
+Go to the "Workflows" tool, and next to the main "Run" button at the top, use the dropdown to select:
+
+*   **`[Dev] Run Full Stack (Node Backend)`** (Recommended for most Replit environments)
+    *   *OR*
+*   **`[Dev] Run Full Stack (Docker Backend)`** (If Docker setup is confirmed working well in your Replit)
+
+---
+
+These workflows provide convenient shortcuts for the most common development, testing, and quality assurance tasks identified in the orchestration plan, making the development loop within Replit much smoother. Remember to configure Replit Secrets and `replit.nix` properly for these commands to function correctly.
