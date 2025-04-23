@@ -6,7 +6,7 @@ channel = "stable-24_05"
 run = ["sh", "-c", "       echo \"Run button configured via Workflows tool. Select desired Workflow.\"      "]
 
 [workflows]
-runButton = "[Dev] Run Full Stack (Node Backend)"
+runButton = "[3. Dev] Run Full Stack"
 
 [[workflows.workflow]]
 name = "[Setup] Install All Dependencies"
@@ -124,3 +124,59 @@ args = "cd apps/frontend && npm run format:write"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd apps/backend && npm run format:write"
+
+[[workflows.workflow]]
+name = "[1. Init] Setup Project"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install -g @nestjs/cli typescript"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm install"
+
+[[workflows.workflow]]
+name = "[2. Foundation] Setup Supabase"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install -g supabase"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "supabase init"
+
+[[workflows.workflow]]
+name = "[3. Dev] Run Full Stack"
+author = 22265372
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run dev"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run start:dev"
+
+[[workflows.workflow]]
+name = "[4. Quality] Run All Checks"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run lint && npm run test"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run lint && npm run test"
