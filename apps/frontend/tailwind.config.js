@@ -10,9 +10,11 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)'],
-        mono: ['var(--font-roboto-mono)'],
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
+  ],
 }
