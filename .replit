@@ -3,7 +3,7 @@ modules = ["nodejs-20"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Security Audit"
+runButton = "Init Stage"
 
 [[workflows.workflow]]
 name = "Frontend Dev"
@@ -39,11 +39,11 @@ mode = "parallel"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/frontend && npm run lint && npm run dev"
+args = "cd $REPL_HOME/apps/frontend && npm run lint && npm run dev"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/backend && npm run lint && npm run start:dev"
+args = "cd $REPL_HOME/apps/backend && npm run lint && npm run start:dev"
 
 [[workflows.workflow]]
 name = "Lint & Format"
@@ -78,11 +78,11 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/frontend && npm audit && npm run build"
+args = "cd $REPL_HOME/apps/frontend && npm audit && npm run build"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../../apps/backend && npm audit && npm run build"
+args = "cd $REPL_HOME/apps/backend && npm audit && npm run build"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
