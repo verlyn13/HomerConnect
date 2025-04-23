@@ -22,10 +22,12 @@ max_rows = 1000
 enabled = false
 
 [db]
-# Use remote database configuration
+# Remote database configuration
+host = "db.caongjwufneioqjpjkvb.supabase.co"
 port = 5432
-shadow_port = 5432
-major_version = 15
+user = "postgres"
+password = "env(POSTGRES_PASSWORD)"
+database = "postgres"
 
 [db.pooler]
 enabled = false
