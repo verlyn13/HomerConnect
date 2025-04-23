@@ -21,7 +21,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "# Setup basics"
+args = "# Setup directories"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -29,11 +29,39 @@ args = "mkdir -p apps/frontend/src apps/backend/src"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "# Frontend setup"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
 args = "cd apps/frontend && npm install"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../backend && npm install"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "# Backend setup"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../backend && npx @nestjs/cli new . --package-manager npm --language typescript --directory . --skip-git --skip-install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "# Return to root"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
