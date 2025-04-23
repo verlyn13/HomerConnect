@@ -4,7 +4,7 @@ channel = "stable-24_05"
 packages = []
 
 [workflows]
-runButton = "Init Stage"
+runButton = "Full Stack Dev"
 
 [[workflows.workflow]]
 name = "Frontend Dev"
@@ -40,11 +40,11 @@ mode = "parallel"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd $REPL_HOME/apps/frontend && npm run lint && npm run dev"
+args = "cd $REPL_HOME/apps/frontend && npm run dev"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd $REPL_HOME/apps/backend && npm run lint && npm run start:dev"
+args = "cd $REPL_HOME/apps/backend && npm run start:dev"
 
 [[workflows.workflow]]
 name = "Lint & Format"
@@ -127,3 +127,7 @@ args = "cd supabase && SUPABASE_NO_KEYRING=true supabase link --project-ref caon
 [[ports]]
 localPort = 3000
 externalPort = 80
+
+[[ports]]
+localPort = 3001
+externalPort = 3001
