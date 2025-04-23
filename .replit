@@ -51,3 +51,76 @@ args = "cd apps/frontend && npm run dev"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd apps/backend && npm run start:dev"
+
+[[workflows.workflow]]
+name = "[Quality] Pre-Commit Check Simulation"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run lint"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run lint"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run test"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run test"
+
+[[workflows.workflow]]
+name = "[Build] Build All"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run build"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run build"
+
+[[workflows.workflow]]
+name = "[Quality] Lint All"
+author = 22265372
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run lint"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run lint"
+
+[[workflows.workflow]]
+name = "[Quality] Format Check All"
+author = 22265372
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run format:check"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run format:check"
+
+[[workflows.workflow]]
+name = "[Quality] Format Write All"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run format:write"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/backend && npm run format:write"
