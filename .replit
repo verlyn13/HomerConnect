@@ -39,11 +39,11 @@ mode = "parallel"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/frontend && npm run dev"
+args = "cd apps/frontend && npm run lint && npm run dev"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/backend && npm run start:dev"
+args = "cd apps/backend && npm run lint && npm run start:dev"
 
 [[workflows.workflow]]
 name = "Lint & Format"
@@ -78,11 +78,23 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/frontend && npm run build"
+args = "# Frontend build with security check"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd ../backend && npm run build"
+args = "cd apps/frontend && npm audit && npm run build"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "# Backend build with security check "
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../backend && npm audit && npm run build"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"✅ Build completed successfully!\""
 
 [[workflows.workflow]]
 name = "Setup NestJS"
@@ -96,6 +108,19 @@ args = "cd apps/backend && npx @nestjs/cli new . --package-manager npm --languag
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd ../.."
+
+[[workflows.workflow]]
+name = "Security Audit"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm audit fix && npm audit"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../backend && npm audit fix && npm audit"
 
 [[ports]]
 localPort = 3000
