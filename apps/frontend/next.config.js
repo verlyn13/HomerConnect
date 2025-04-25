@@ -24,22 +24,17 @@ const nextConfig = {
     ];
   },
 
-  // Suppress image optimization warnings
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**",
+        protocol: 'https',
+        hostname: '**',
       },
     ],
-    unoptimized: true,
-  },
-
-  // Silence unhandledRejection warnings
-  onDemandEntries: {
-    // Silent mode
-    quiet: true,
-  },
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  }
 };
 
 module.exports = nextConfig;
