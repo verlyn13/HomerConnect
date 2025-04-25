@@ -12,6 +12,8 @@
     "supabase:stop": "supabase stop",
     "supabase:link": "npm run load-secrets && cd supabase && source ../.env && supabase link --project-ref caongjwufneioqjpjkvb -p \"$POSTGRES_PASSWORD\"",
     "supabase:push": "npm run load-secrets && SUPABASE_NO_KEYRING=true supabase db push",
+    "supabase:push:local": "npm run load-secrets && SUPABASE_NO_KEYRING=true supabase db push --local",
+    "migrations:check": "bash scripts/check_migration_timestamps.sh",
     "security:setup": "bash scripts/setup_pre_commit.sh",
     "security:clean": "bash scripts/clean_secrets.sh",
     "security:scan": "pre-commit run --all-files",
@@ -40,9 +42,8 @@
     "typescript-eslint": "^8.31.0"
   },
   "devDependencies": {
-    "supabase": "^2.22.4",
-    "pre-commit": "^1.2.2",
     "detect-secrets": "^1.0.6",
-    "gitleaks": "^8.16.1"
+    "pre-commit": "^1.2.2",
+    "supabase": "^2.22.6"
   }
 }

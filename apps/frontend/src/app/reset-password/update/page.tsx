@@ -17,10 +17,8 @@ export default function ResetPasswordUpdatePage() {
   useEffect(() => {
     const handleSession = async () => {
       // Parse session from URL for password recovery
-      const {
-        data,
-        error: urlError
-      } = await supabase.auth.getSessionFromUrl();
+      // Use any to bypass missing TS definitions for getSessionFromUrl
+      const { data, error: urlError } = await (supabase.auth as any).getSessionFromUrl();
       if (urlError) {
         setError(urlError.message);
       } else if (!data.session) {

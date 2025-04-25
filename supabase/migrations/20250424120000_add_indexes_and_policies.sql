@@ -17,20 +17,29 @@ CREATE INDEX IF NOT EXISTS idx_event_rsvps_user_id ON public.event_rsvps(user_id
 
 -- RLS policies for categories
 ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
-CREATE POLICY IF NOT EXISTS "Public categories are viewable by everyone" ON public.categories
+-- Idempotency guard: drop existing category policies if re-running
+DROP POLICY IF EXISTS "Public categories are viewable by everyone" ON public.categories;
+DROP POLICY IF EXISTS "Authenticated users can insert categories" ON public.categories;
+DROP POLICY IF EXISTS "Authenticated users can update categories" ON public.categories;
+DROP POLICY IF EXISTS "Authenticated users can delete categories" ON public.categories;
+CREATE POLICY "Public categories are viewable by everyone" ON public.categories
     FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "Authenticated users can insert categories" ON public.categories
+CREATE POLICY "Authenticated users can insert categories" ON public.categories
     FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY IF NOT EXISTS "Authenticated users can update categories" ON public.categories
+CREATE POLICY "Authenticated users can update categories" ON public.categories
     FOR UPDATE USING (auth.role() = 'authenticated');
-CREATE POLICY IF NOT EXISTS "Authenticated users can delete categories" ON public.categories
+CREATE POLICY "Authenticated users can delete categories" ON public.categories
     FOR DELETE USING (auth.role() = 'authenticated');
 
 -- RLS policies for event_categories
 ALTER TABLE public.event_categories ENABLE ROW LEVEL SECURITY;
-CREATE POLICY IF NOT EXISTS "Public event_categories are viewable by everyone" ON public.event_categories
+-- Idempotency guard: drop existing event_categories policies
+DROP POLICY IF EXISTS "Public event_categories are viewable by everyone" ON public.event_categories;
+DROP POLICY IF EXISTS "Event creators can insert event_categories" ON public.event_categories;
+DROP POLICY IF EXISTS "Event creators can delete event_categories" ON public.event_categories;
+CREATE POLICY "Public event_categories are viewable by everyone" ON public.event_categories
     FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "Event creators can insert event_categories" ON public.event_categories
+CREATE POLICY "Event creators can insert event_categories" ON public.event_categories
     FOR INSERT WITH CHECK (
       EXISTS (
         SELECT 1 FROM public.events e
@@ -38,7 +47,7 @@ CREATE POLICY IF NOT EXISTS "Event creators can insert event_categories" ON publ
           AND e.creator_id = auth.uid()
       )
     );
-CREATE POLICY IF NOT EXISTS "Event creators can delete event_categories" ON public.event_categories
+CREATE POLICY "Event creators can delete event_categories" ON public.event_categories
     FOR DELETE USING (
       EXISTS (
         SELECT 1 FROM public.events e
@@ -49,11 +58,16 @@ CREATE POLICY IF NOT EXISTS "Event creators can delete event_categories" ON publ
 
 -- RLS policies for event_rsvps
 ALTER TABLE public.event_rsvps ENABLE ROW LEVEL SECURITY;
-CREATE POLICY IF NOT EXISTS "Public RSVPs are viewable by everyone" ON public.event_rsvps
+-- Idempotency guard: drop existing event_rsvps policies
+DROP POLICY IF EXISTS "Public RSVPs are viewable by everyone" ON public.event_rsvps;
+DROP POLICY IF EXISTS "Authenticated users can insert RSVPs" ON public.event_rsvps;
+DROP POLICY IF EXISTS "Users can update their own RSVPs" ON public.event_rsvps;
+DROP POLICY IF EXISTS "Users can delete their own RSVPs" ON public.event_rsvps;
+CREATE POLICY "Public RSVPs are viewable by everyone" ON public.event_rsvps
     FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "Authenticated users can insert RSVPs" ON public.event_rsvps
+CREATE POLICY "Authenticated users can insert RSVPs" ON public.event_rsvps
     FOR INSERT WITH CHECK (auth.role() = 'authenticated' AND auth.uid() = user_id);
-CREATE POLICY IF NOT EXISTS "Users can update their own RSVPs" ON public.event_rsvps
+CREATE POLICY "Users can update their own RSVPs" ON public.event_rsvps
     FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY IF NOT EXISTS "Users can delete their own RSVPs" ON public.event_rsvps
+CREATE POLICY "Users can delete their own RSVPs" ON public.event_rsvps
     FOR DELETE USING (auth.uid() = user_id);

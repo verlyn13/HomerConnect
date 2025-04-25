@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
@@ -6,30 +7,35 @@ import { MailService } from './mail.service';
 
 @Module({
   imports: [
-    MailerModule.forRoot({
-      transport: {
-        host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT || '587', 10),
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
+    ConfigModule,
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        transport: {
+          host: config.get<string>('SMTP_HOST'),
+          port: config.get<number>('SMTP_PORT'),
+          secure: false,
+          auth: {
+            user: config.get<string>('SMTP_USER'),
+            pass: config.get<string>('SMTP_PASS'),
+          },
+          tls: {
+            rejectUnauthorized: false,
+          },
         },
-        tls: {
-          rejectUnauthorized: false
-        }
-      },
-      defaults: {
-        from: '"Homer Calendar" <hello@homer-events.org>',
-      },
-      template: {
-        dir: join(__dirname, 'templates'),
-        adapter: new HandlebarsAdapter(),
-        options: {
-          strict: true,
+        defaults: {
+          from: '"Homer Calendar" <hello@homer-events.org>',
         },
-      },
-      preview: process.env.NODE_ENV !== 'production',
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+        preview: config.get<string>('NODE_ENV') !== 'production',
+      }),
     }),
   ],
   providers: [MailService],

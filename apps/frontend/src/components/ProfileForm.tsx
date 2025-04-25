@@ -62,7 +62,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
       accent_color: accentColor,
       interests: interests.split(',').map(i => i.trim()).filter(i => i),
     };
-    const { error } = await supabase.from('profiles').upsert(payload, { returning: 'representation' });
+    const { error } = await supabase.from('profiles').upsert(payload);
     if (error) {
       setErrorMsg(error.message);
     } else {

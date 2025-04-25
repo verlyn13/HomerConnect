@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
@@ -6,16 +7,17 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 export class ProfilesService {
   private supabase: SupabaseClient;
 
-  constructor() {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  constructor(private configService: ConfigService) {
+    const supabaseUrl = this.configService.get<string>('SUPABASE_URL');
+    const supabaseServiceKey = this.configService.get<string>('SUPABASE_SERVICE_ROLE_KEY');
 
     if (!supabaseUrl || !supabaseServiceKey) {
       throw new Error(`Missing Supabase environment variables. URL: ${supabaseUrl}, Key exists: ${!!supabaseServiceKey}`);
     }
 
-    if (!supabaseUrl.startsWith('https://')) {
-      throw new Error('Supabase URL must start with https://');
+    // Allow HTTPS URLs or localhost during development
+    if (!supabaseUrl.startsWith('https://') && !supabaseUrl.startsWith('http://localhost')) {
+      throw new Error('Supabase URL must start with https:// or be a localhost URL');
     }
 
     this.supabase = createClient(supabaseUrl, supabaseServiceKey);

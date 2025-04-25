@@ -36,14 +36,9 @@ export default function BannerPicker({
       setUploading(false);
       return;
     }
-    const { data: urlData, error: urlError } = supabase.storage
+    const { data: urlData } = supabase.storage
       .from("avatars")
       .getPublicUrl(filePath);
-    if (urlError) {
-      console.error("Get public URL error:", urlError.message);
-      setUploading(false);
-      return;
-    }
     setPreviewUrl(urlData.publicUrl);
     onUpload(urlData.publicUrl);
     setUploading(false);

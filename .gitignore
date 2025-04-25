@@ -6,9 +6,14 @@ node_modules/
 apps/frontend/.next/
 apps/backend/dist/
 
-## Environment files
+## Environment files (ignore local secrets)
 .env
-.env.*
+.env.local
+.env.development.local
+.env.production.local
+
+# Allow .env.example files to be committed
+!.env.example
 
 ## Supabase temp files
 supabase/.env
