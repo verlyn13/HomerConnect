@@ -17,6 +17,6 @@ export class AppController {
   @Post('send-test-email/:email')
   async sendTestEmail(@Param('email') email: string) {
     await this.mailService.sendTest(email);
-    return { message: `Test email sent to ${email}` };
+    return { success: true };
   }
 }
