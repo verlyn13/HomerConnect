@@ -10,15 +10,21 @@ export class MailService {
    * @param to Email recipient
    */
   async sendTest(to: string): Promise<void> {
-    await this.mailerService.sendMail({
-      to,
-      subject: 'Test Email from Homer Calendar',
-      template: './test', // corresponds to ./templates/test.hbs
-      context: {
-        name: 'Test User',
-        date: new Date().toLocaleDateString(),
-      },
-    });
+    try {
+      await this.mailerService.sendMail({
+        to,
+        subject: 'Test Email from Homer Calendar',
+        template: './test',
+        context: {
+          name: 'Test User',
+          date: new Date().toLocaleDateString(),
+        },
+      });
+      console.log('Test email sent successfully');
+    } catch (error) {
+      console.error('Failed to send test email:', error);
+      throw error;
+    }
   }
 
   /**

@@ -10,10 +10,14 @@ import { MailService } from './mail.service';
       transport: {
         host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT || '587', 10),
+        secure: false,
         auth: {
           user: process.env.SMTP_USER,
           pass: process.env.SMTP_PASS,
         },
+        tls: {
+          rejectUnauthorized: false
+        }
       },
       defaults: {
         from: '"Homer Calendar" <hello@homer-events.org>',
@@ -25,6 +29,7 @@ import { MailService } from './mail.service';
           strict: true,
         },
       },
+      preview: process.env.NODE_ENV !== 'production',
     }),
   ],
   providers: [MailService],
