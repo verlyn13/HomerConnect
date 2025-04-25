@@ -1,5 +1,6 @@
 'use server';
 
+import type { Transporter } from 'nodemailer';
 import nodemailer from 'nodemailer';
 
 /**
