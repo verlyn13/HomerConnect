@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { createClient } from '@/utils/supabase/client';
@@ -50,10 +51,12 @@ export default function BannerPicker({ initialUrl = null, onUpload }: BannerPick
       <label className="block mb-1 font-medium">Banner Image</label>
       <div className="mb-2">
         {previewUrl ? (
-          <img
+          <Image
             src={previewUrl}
             alt="Banner preview"
-            className="w-full h-40 object-cover rounded"
+            width={800}
+            height={160}
+            className="w-full object-cover rounded"
           />
         ) : (
           <div className="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500 rounded">

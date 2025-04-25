@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { createClient } from '@/utils/supabase/client';
@@ -50,10 +51,12 @@ export default function AvatarUpload({ initialUrl = null, onUpload }: AvatarUplo
       <label className="block mb-1 font-medium">Avatar</label>
       <div className="mb-2">
         {previewUrl ? (
-          <img
+          <Image
             src={previewUrl}
             alt="Avatar preview"
-            className="w-24 h-24 rounded-full object-cover"
+            width={96}
+            height={96}
+            className="rounded-full object-cover"
           />
         ) : (
           <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
