@@ -28,7 +28,7 @@ BACKEND_PID=$!
 # Start frontend
 echo "Starting Next.js frontend server on port 3005..."
 cd "$BASE_DIR/apps/frontend"
-PORT=3005 npm run dev
+PORT=3000 npm run dev
 
 # When frontend exits, kill backend too
 kill $BACKEND_PID

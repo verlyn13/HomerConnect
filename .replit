@@ -4,7 +4,7 @@ channel = "stable-24_05"
 packages = []
 
 [workflows]
-runButton = "Full Stack Dev"
+runButton = "Build and Check"
 
 [[workflows.workflow]]
 name = "Frontend Dev"
@@ -123,6 +123,19 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd supabase && SUPABASE_NO_KEYRING=true supabase link --project-ref caongjwufneioqjpjkvb -p $POSTGRES_PASSWORD"
+
+[[workflows.workflow]]
+name = "Build and Check"
+author = 22265372
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/frontend && npm run build"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../backend && npm run build"
 
 [[ports]]
 localPort = 3000
