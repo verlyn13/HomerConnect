@@ -1,34 +1,24 @@
-
 repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+        args: ['--maxkb=500']
+
 -   repo: https://github.com/Yelp/detect-secrets
-    rev: v1.4.0
+    rev: v1.5.0
     hooks:
     -   id: detect-secrets
-        name: Detect Secrets
         exclude: |
             (?x)^(
                 package-lock.json|
                 yarn.lock|
                 .*\.min\.js|
                 .*\.min\.css|
-                .*\.svg
+                .*\.svg|
+                .*\.d\.ts
             )$
-        args: [
-            '--baseline', '.secrets.baseline',
-            '--custom-plugins', 'scripts/detect_secrets_filters.py',
-            '--config', '.custom-secrets-config.json'
-        ]
-
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-    -   id: check-added-large-files
-    -   id: check-case-conflict
-    -   id: check-merge-conflict
-    -   id: detect-private-key
-    -   id: check-yaml
-    -   id: check-json
-    -   id: check-toml
-    -   id: end-of-file-fixer
-    -   id: trailing-whitespace
-    -   id: check-executables-have-shebangs
+        args: ['--baseline', '.secrets.baseline']

@@ -1,9 +1,9 @@
 "use client";
 
-import Image from 'next/image';
-import { useState } from 'react';
-import type { ChangeEvent } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import Image from "next/image";
+import { useState } from "react";
+import type { ChangeEvent } from "react";
+import { createClient } from "@/utils/supabase/client";
 
 export interface BannerPickerProps {
   /** Initial banner URL to display */
@@ -12,7 +12,10 @@ export interface BannerPickerProps {
   onUpload: (url: string) => void;
 }
 
-export default function BannerPicker({ initialUrl = null, onUpload }: BannerPickerProps) {
+export default function BannerPicker({
+  initialUrl = null,
+  onUpload,
+}: BannerPickerProps) {
   const supabase = createClient();
   const [previewUrl, setPreviewUrl] = useState<string | null>(initialUrl);
   const [uploading, setUploading] = useState(false);
@@ -20,24 +23,24 @@ export default function BannerPicker({ initialUrl = null, onUpload }: BannerPick
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}.${fileExt}`;
     const filePath = fileName;
 
     setUploading(true);
     const { error: uploadError } = await supabase.storage
-      .from('avatars')
+      .from("avatars")
       .upload(filePath, file, { upsert: true });
     if (uploadError) {
-      console.error('Banner upload error:', uploadError.message);
+      console.error("Banner upload error:", uploadError.message);
       setUploading(false);
       return;
     }
     const { data: urlData, error: urlError } = supabase.storage
-      .from('avatars')
+      .from("avatars")
       .getPublicUrl(filePath);
     if (urlError) {
-      console.error('Get public URL error:', urlError.message);
+      console.error("Get public URL error:", urlError.message);
       setUploading(false);
       return;
     }
@@ -51,13 +54,15 @@ export default function BannerPicker({ initialUrl = null, onUpload }: BannerPick
       <label className="block mb-1 font-medium">Banner Image</label>
       <div className="mb-2">
         {previewUrl ? (
-          <Image
-            src={previewUrl}
-            alt="Banner preview"
-            width={800}
-            height={160}
-            className="w-full object-cover rounded"
-          />
+          <div className="relative w-full h-40">
+            <Image
+              src={previewUrl}
+              alt="Banner preview"
+              fill
+              className="object-cover rounded"
+              sizes="(max-width: 800px) 100vw, 800px"
+            />
+          </div>
         ) : (
           <div className="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500 rounded">
             No Banner
