@@ -14,12 +14,11 @@ export class ProfilesService {
       throw new Error(`Missing Supabase environment variables. URL: ${supabaseUrl}, Key exists: ${!!supabaseServiceKey}`);
     }
 
-    // Ensure URL is properly formatted
-    const validUrl = supabaseUrl.startsWith('http://') || supabaseUrl.startsWith('https://') 
-      ? supabaseUrl 
-      : `https://${supabaseUrl}`;
+    if (!supabaseUrl.startsWith('https://')) {
+      throw new Error('Supabase URL must start with https://');
+    }
 
-    this.supabase = createClient(validUrl, supabaseServiceKey);
+    this.supabase = createClient(supabaseUrl, supabaseServiceKey);
   }
 
   async getProfile(id: string) {
