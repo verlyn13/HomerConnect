@@ -20,14 +20,24 @@ echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}    Loading HomerConnect Secrets       ${NC}"
 echo -e "${BLUE}========================================${NC}"
 
+# Check if .env files are being tracked by git
+ENV_FILES_TRACKED=$(git ls-files .env supabase/.env .env.* 2>/dev/null)
+if [[ -n "$ENV_FILES_TRACKED" ]]; then
+  echo -e "${RED}⚠️  WARNING: Environment files are tracked by git!${NC}"
+  echo -e "${RED}The following files may contain secrets and should be removed from git:${NC}"
+  echo -e "${RED}$ENV_FILES_TRACKED${NC}"
+  echo -e "${YELLOW}Run 'npm run security:clean' to safely remove these files from git history${NC}"
+  echo -e "${YELLOW}Then make sure they are in .gitignore to prevent future commits${NC}"
+fi
+
 # Check if secrets file exists
 if [ ! -f "$SECRETS_FILE" ]; then
   echo -e "${YELLOW}⚠️  Secrets file not found at $SECRETS_FILE${NC}"
   echo -e "${YELLOW}Creating empty secrets file...${NC}"
-  
+
   # Create directory if it doesn't exist
   mkdir -p ~/.secrets/HomerConnect
-  
+
   # Create empty JSON file with a template
   cat > "$SECRETS_FILE" << EOF
 {
@@ -45,7 +55,7 @@ fi
 if command -v jq >/dev/null 2>&1; then
   # Parse JSON using jq (more reliable)
   echo -e "${BLUE}🔑 Loading secrets using jq...${NC}"
-  
+
   # Extract each key-value pair and export as environment variables
   while IFS="=" read -r key value; do
     # Remove quotes and export
@@ -54,12 +64,12 @@ if command -v jq >/dev/null 2>&1; then
     export "$key=$value"
     echo -e "${GREEN}✓${NC} Loaded $key"
   done < <(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" "$SECRETS_FILE")
-  
+
 else
   # Fallback to bash parsing (less reliable but no dependencies)
   echo -e "${YELLOW}⚠️  jq not found, using fallback method for parsing JSON${NC}"
   echo -e "${YELLOW}For more reliable parsing, install jq: sudo apt install jq${NC}"
-  
+
   # Read JSON file line by line
   while IFS= read -r line; do
     # Use regex to extract key-value pairs
@@ -106,7 +116,7 @@ if [[ -n "$POSTGRES_PASSWORD" ]]; then
   # Replace .env file with properly escaped password
   sed -i "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$(printf "%q" "$POSTGRES_PASSWORD")|" "$ENV_FILE"
   sed -i "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$(printf "%q" "$POSTGRES_PASSWORD")|" "$SUPABASE_ENV_FILE"
-  
+
   echo -e "${GREEN}✓${NC} Special characters in passwords handled"
 fi
 

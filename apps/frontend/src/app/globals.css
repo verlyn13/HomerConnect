@@ -24,4 +24,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter);
+  /* Fix invalid CSS declarations with proper values */
+  -webkit-text-size-adjust: 100%; /* Use valid value */
+  -webkit-font-smoothing: antialiased; /* Use this instead of -moz-osx-font-smoothing */
+  text-rendering: optimizeLegibility;
 }

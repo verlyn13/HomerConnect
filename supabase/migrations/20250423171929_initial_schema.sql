@@ -98,3 +98,20 @@ CREATE TRIGGER handle_updated_at_events
     BEFORE UPDATE ON public.events
     FOR EACH ROW
     EXECUTE PROCEDURE handle_updated_at();
+
+-- Function and trigger to auto-create profile on new auth user signup
+CREATE OR REPLACE FUNCTION public.create_profile_on_signup()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email)
+  VALUES (NEW.id, NEW.email)
+  ON CONFLICT DO NOTHING;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger on auth.users to insert into profiles
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE PROCEDURE public.create_profile_on_signup();

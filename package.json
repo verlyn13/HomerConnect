@@ -11,7 +11,13 @@
     "supabase:start": "npm run load-secrets && supabase start",
     "supabase:stop": "supabase stop",
     "supabase:link": "npm run load-secrets && cd supabase && source ../.env && supabase link --project-ref caongjwufneioqjpjkvb -p \"$POSTGRES_PASSWORD\"",
-    "supabase:push": "npm run load-secrets && SUPABASE_NO_KEYRING=true supabase db push"
+    "supabase:push": "npm run load-secrets && SUPABASE_NO_KEYRING=true supabase db push",
+    "security:setup": "bash scripts/setup_pre_commit.sh",
+    "security:clean": "bash scripts/clean_secrets.sh",
+    "security:scan": "pre-commit run --all-files",
+    "security:scan-custom": "bash scripts/scan_secrets_custom.sh",
+    "security:toggle-hooks": "bash scripts/toggle_hooks.sh",
+    "security:audit": "detect-secrets audit .secrets.baseline"
   },
   "keywords": [],
   "author": "",
@@ -24,14 +30,19 @@
     "@tailwindcss/typography": "^0.5.16",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
+    "dotenv": "^16.5.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
     "next": "^15.3.1",
+    "nodemailer": "^6.10.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "typescript-eslint": "^8.31.0"
   },
   "devDependencies": {
-    "supabase": "^2.22.4"
+    "supabase": "^2.22.4",
+    "pre-commit": "^1.2.2",
+    "detect-secrets": "^1.0.6",
+    "gitleaks": "^8.16.1"
   }
 }
